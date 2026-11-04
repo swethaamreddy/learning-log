@@ -16,4 +16,4 @@ Which months are consistently strongest and weakest for sales and profit, and ho
 FORMULAS - region sales, profit, discount analysis with SUMIFS/COUNTIFS 
 # DAY 3
 IF, XLOOKUP/VLOOKUP, date and text columns.
-
+“Central Furniture: $163,797 sales, −$2,871 profit (−1.8% margin).”
