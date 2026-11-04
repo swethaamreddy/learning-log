@@ -13,5 +13,7 @@ Which product sub-categories lose money overall, and is heavy discounting the ca
 Which states generate high sales but negative profit, and what’s driving the losses there?
 Which months are consistently strongest and weakest for sales and profit, and how should we plan around that?
 # DAY 2
-FORMULAS -
+FORMULAS - region sales, profit, discount analysis with SUMIFS/COUNTIFS 
+# DAY 3
+IF, XLOOKUP/VLOOKUP, date and text columns.
 
