@@ -17,3 +17,6 @@ FORMULAS - region sales, profit, discount analysis with SUMIFS/COUNTIFS
 # DAY 3
 IF, XLOOKUP/VLOOKUP, date and text columns.
 “Central Furniture: $163,797 sales, −$2,871 profit (−1.8% margin).”
+Deep discounts (above 30%) lost $125K, against $286K total profit.
+Central has the highest discounts (24%) and the lowest margin (7.9%).
+Furniture is the weak category: 1 in 3 lines loses money, and Central Furniture runs at −1.8%
