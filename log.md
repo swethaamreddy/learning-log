@@ -1,22 +1,125 @@
-# DAY 1
-Asking the right questions - 
-A business question is one a manager would ask to make a decision, and that your data can actually answer. It’s not “what’s in the data?” but “what should we do?”
+## Day 1 · Setup + business questions
 
-A good one has three parts:
+**Did**
+- Created GitHub, Kaggle and LinkedIn accounts
+- Set up Excel; downloaded "Sample - Superstore" from Kaggle (version with Order Date, ~9,994 rows)
+- Created the `learning-log` repo
+- Explored the columns and wrote 3 business questions
+
+**Lessons**
+- A business question leads to a decision, not just a number
+- Formula: "Which [group] has the highest/lowest [metric], and what should we do about it?"
+- Every question needs a dimension (State, Region, Category, date) and a metric (Sales, Profit, Discount)
+- Check the column exists before asking: Quantity is units ordered (demand), not supply
+- One row = one product line within an order
+- Asking the right questions - 
+A business question is one a manager would ask to make a decision, and that your data can actually answer. It’s not “what’s in the data?” but “what should we do?”
+- A good one has three parts:
 
 A decision behind it: someone could act on the answer (cut, invest, change a price, fix a process).
 Specific: it names what to measure and how to slice it.
 Answerable with your columns: if the data doesn’t have it, it’s not a question for this dataset.
 A simple formula to start with: “Which [group] has the highest/lowest [metric], and what should we do about it?”
-FINAL QUESTIONS:
-Which product sub-categories lose money overall, and is heavy discounting the cause? Should we cap discounts on them?
-Which states generate high sales but negative profit, and what’s driving the losses there?
-Which months are consistently strongest and weakest for sales and profit, and how should we plan around that?
-# DAY 2
-FORMULAS - region sales, profit, discount analysis with SUMIFS/COUNTIFS 
-# DAY 3
-IF, XLOOKUP/VLOOKUP, date and text columns.
-“Central Furniture: $163,797 sales, −$2,871 profit (−1.8% margin).”
-Deep discounts (above 30%) lost $125K, against $286K total profit.
-Central has the highest discounts (24%) and the lowest margin (7.9%).
-Furniture is the weak category: 1 in 3 lines loses money, and Central Furniture runs at −1.8%
+
+**Final questions (basis for project B1)**
+1. Which product sub-categories lose money overall, and is heavy discounting the cause? Should we cap discounts on them?
+2. Which states generate high sales but negative profit, and what's driving the losses there?
+3. Which months are consistently strongest and weakest for sales and profit, and how should we plan around that?
+
+## Day 2 · Formulas
+
+**Did**
+- Relative (A1), absolute ($A$1) and mixed ($A1, A$1) references; F4 to toggle (Cmd + T on Mac)
+- SUMIFS, AVERAGEIFS, COUNTIFS on Superstore
+- SUMIF vs SUMIFS: different argument order → default to SUMIFS
+- Built a region table: Sales, Profit, Margin, Avg Discount, Loss-Making Lines, Share
+- Completed 15 formula exercises
+
+**Lessons**
+- Bug found: unlocked ranges slid down when dragged, so South and West totals were wrong
+  with no error shown → lock data ranges with $
+- Put criteria in a cell (T2) instead of typing text, then drag
+- Compare rates, not raw counts, when groups differ in size
+- Say "consistent with", not "caused by"
+- Sanity-check every number: sales can't be negative; you can't add percentages
+- Overall margin = SUM(profit) ÷ SUM(sales), not the average of row margins
+- Check both direction and size when comparing groups (per line vs margin)
+- Label columns precisely ("Order Lines", not "Total Profits")
+
+**Finding: regions**
+| Region | Sales | Profit | Margin | Avg Discount | Loss-Making Lines |
+|---|---|---|---|---|---|
+| Central | $501,240 | $39,706 | 7.9% | 24.0% | 31.9% |
+| East | $678,781 | $91,523 | 13.5% | 14.5% | 19.4% |
+| South | $391,722 | $46,749 | 11.9% | 14.7% | 16.0% |
+| West | $725,458 | $108,418 | 14.9% | 10.9% | 9.9% |
+
+**Other findings (exercises)**
+- Total: $2,297,201 sales, $286,397 profit, 12.5% margin
+- Lines with discount > 30% lost $125,007
+- Biggest single loss: −$6,600 on a 3D printer sold at 70% off
+- Central Furniture: $163,797 sales, −$2,871 profit (−1.8% margin)
+- Office Supplies margin 17.0%; 33.7% of Furniture lines lose money
+- Home Office is the most efficient segment (14.0% margin vs 11.5% Consumer)
+
+## Day 3 · Lookups, logic, dates and text
+
+**Did**
+- IF, nested IF, IFERROR
+- New columns: Profit Margin, Profit Status (Loss/Profit), Margin Band (Loss/Low/Healthy)
+- XLOOKUP with a target-margin table per region + "Not found" fallback
+- VLOOKUP version of the same lookup; check column → 0 mismatches
+- INDEX/MATCH: the older way to look left
+- Dates: YEAR, MONTH, TEXT(date, "mmm"); Days to Ship = Ship Date − Order Date
+- Text: MID to pull the year out of Order IDs
+
+**Lessons**
+- Boundary bug: `>10%` put exactly 10% in the wrong band → test edge values; use `<` from low to high
+- XLOOKUP beats VLOOKUP: looks left, no hard-coded column number, exact match by default
+- Always use FALSE in VLOOKUP unless you want approximate match
+- MID returns text ("2016"), YEAR returns a number (2016) → wrap in VALUE() to compare
+- Debug a formula by testing it in pieces
+- ISNUMBER confirms dates are real dates (watch US vs Indian date formats)
+
+**Findings**
+- “Central Furniture: $163,797 sales, −$2,871 profit (−1.8% margin).”
+- Deep discounts (above 30%) lost $125K, against $286K total profit.
+- Central has the highest discounts (24%) and the lowest margin (7.9%).
+- Furniture is the weak category: 1 in 3 lines loses money, and Central Furniture runs at −1.8%
+
+**Checks**
+- Loss rows = 1,871, matches Day 2 regional counts (741 + 553 + 259 + 318)
+- Below + Met target = 9,994 (every row classified)
+- Order ID year vs Order Year → 0 mismatches
+- Average Days to Ship ≈ 4 days
+
+
+
+## Day 4 · Data cleaning
+
+**Did**
+- Worked on a copy (`clean` sheet), never the original
+- Duplicates: 5,009 unique orders across 9,994 rows (~2 lines per order); repeated Order IDs are normal
+- Removed 1 exact duplicate row (all fields identical except Row ID), treated as a double entry
+- Blanks: COUNTBLANK per column → 0 in every column
+- Data types: ISNUMBER on Sales, Quantity, Discount, Profit → 9,993 / 9,993 real numbers
+- Hidden spaces: LEN vs TRIM check → 0
+- Built a Discount Band column with VLOOKUP approximate match (sorted lookup table)
+
+**Lessons**
+- A duplicate depends on what one row represents
+- Hard-coded ranges break when rows change → use Excel Tables (Ctrl + T)
+- Know what a passing check should return (9,993, not 0)
+- Missing values can hide as "N/A", "-", or 0
+- Document every cleaning decision
+
+**Finding**
+| Band | Lines | Profit | Margin |
+|---|---|---|---|
+| 0% | 4,798 | $320,988 | 29.5% |
+| 1–20% | 3,803 | $100,785 | 11.9% |
+| 21–40% | 459 | −$35,805 | −15.3% |
+| Over 40% | 933 | −$99,559 | −77.4% |
+
+Discounts above 20% lose money. Lines over 40% off are 9% of orders but lost ~$100K.
+Capping discounts at 20% could protect up to ~$135K (assumes customers still buy).
