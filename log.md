@@ -123,3 +123,39 @@ A simple formula to start with: “Which [group] has the highest/lowest [metric]
 
 Discounts above 20% lose money. Lines over 40% off are 9% of orders but lost ~$100K.
 Capping discounts at 20% could protect up to ~$135K (assumes customers still buy).
+
+## Day 5 · Pivot tables, charts and slicers
+
+**Did**
+- Turned the clean data into an Excel Table (Ctrl + T) and built pivots from it
+- Rebuilt the region table as a pivot: Sum of Sales/Profit, Count of Order ID, Average Discount
+- Checked against Day 2: only East changed (the removed duplicate was an East order)
+- Built a Category × Region pivot (two dimensions at once)
+- Calculated margins next to the pivot (Excel for the web has no calculated fields)
+- Made two finding-style charts: margin by discount band, and margin by category × region
+- Added slicers for Order Year and Region
+
+**Lessons**
+- Never put a row-level margin column in pivot Values: summing or averaging it is wrong
+- Two-dimensional views reveal what one-dimension tables hide
+- Chart titles state the finding, not the topic
+- Bar charts with negative values: set axis label position to Low
+- Horizontal bars list from the bottom up: use "Categories in reverse order"
+- When data labels show every value, remove the axis and add a subtitle saying what the numbers are
+- Colour only what the title is about; mute the rest
+- When a tool can't format something, reshape the data (Profit/Loss helper columns)
+- Keep charts in the same file as their data, or they become external links
+- Slicers filter pivots, not SUMIFS formulas
+
+**Findings: margin by category × region**
+| Category | Central | East | South | West | Total |
+|---|---|---|---|---|---|
+| Furniture | −1.8% | 1.5% | 5.8% | 4.6% | 2.5% |
+| Office Supplies | 5.3% | 20.0% | 15.9% | 23.8% | 17.0% |
+| Technology | 19.8% | 17.9% | 13.4% | 17.6% | 17.4% |
+| All | 7.9% | 13.5% | 11.9% | 14.9% | 12.5% |
+
+- Furniture is under 10% margin in every region; it loses money only in Central (East is next at 1.5%)
+- Central trails on two of three categories: Office Supplies earns 5.3% there vs 16–24% elsewhere
+- Central Furniture lost money in all four years: −$1,105 (2014), −$231 (2015), −$254 (2016), −$1,281 (2017) = −$2,871
+- Consistent but small (~1% of total profit); deep discounts (−$135K) are the bigger problem
