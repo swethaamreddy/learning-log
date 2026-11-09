@@ -165,8 +165,8 @@ Capping discounts at 20% could protect up to ~$135K (assumes customers still buy
 **Did**
 - Answered all three Day 1 business questions with evidence
 - Picked three headline numbers (context, problem, proof) and built a one-page Excel dashboard
-- Published B1 to its own repo: README, dashboard.png, .xlsx
-  → https://github.com/<your-username>/superstore-profit-analysis
+- Published B1 to its own repo: README, Dashboard.png, .xlsx
+  → https://github.com/swethaamreddy/superstore-profit-analysis
 
 **Findings**
 - Q1, sub-categories: Tables (−$17.7K) and Bookcases (−$3.5K) are profitable at ≤20% off
