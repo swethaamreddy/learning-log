@@ -159,3 +159,32 @@ Capping discounts at 20% could protect up to ~$135K (assumes customers still buy
 - Central trails on two of three categories: Office Supplies earns 5.3% there vs 16–24% elsewhere
 - Central Furniture lost money in all four years: −$1,105 (2014), −$231 (2015), −$254 (2016), −$1,281 (2017) = −$2,871
 - Consistent but small (~1% of total profit); deep discounts (−$135K) are the bigger problem
+
+## Day 6 · Build B1 (dashboard + GitHub)
+
+**Did**
+- Answered all three Day 1 business questions with evidence
+- Picked three headline numbers (context, problem, proof) and built a one-page Excel dashboard
+- Published B1 to its own repo: README, dashboard.png, .xlsx
+  → https://github.com/<your-username>/superstore-profit-analysis
+
+**Findings**
+- Q1, sub-categories: Tables (−$17.7K) and Bookcases (−$3.5K) are profitable at ≤20% off
+  (11.1%, 8.8% margins) but run −34.1% and −38.9% above it; 176 of 319 Tables lines are discounted >20%
+- Q1, Supplies: discounts are low (7.7%); the loss comes from letter openers. None of the 10 products
+  makes money (−$2.1K, 2 products = 83%); the rest of Supplies earns +$0.9K
+- Q2, states: Texas, Ohio, Pennsylvania, Illinois, North Carolina lose $78K combined, average 28–39% discount,
+  never sell at full price; ≤20% lines are profitable in all five; Over 40% lines alone lost $72.4K
+- Q3, months: Sep, Nov, Dec peak every year; Feb is slowest but best margin (17.2%);
+  Nov's 10.1% margin comes from a few >40% discount orders (3D printer at 70% off: −$6.6K)
+- Headline: ≤20% off → 21.8% margin; >20% off → −37.3%; >20% lost $135K vs $286K total profit
+
+**Lessons**
+- Test a hypothesis and look for where it breaks (Supplies didn't fit the discount story)
+- Materiality: report what changes a decision, note what doesn't, never drop it silently
+- An average can look normal while extremes do the damage (November)
+- Removing outliers: same rule for every group, or remove only the clear extreme
+- Before a number goes on a headline card, check that the parts add up to the whole (−44.2% → −37.3%)
+- A recommendation = action + scope + impact + caveat/next step
+- Dashboard: headline cards linked to calculation cells, red only for losses, everything aligned
+- README.md needs the .md extension to render; image links are case-sensitive
