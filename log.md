@@ -188,3 +188,36 @@ Capping discounts at 20% could protect up to ~$135K (assumes customers still buy
 - A recommendation = action + scope + impact + caveat/next step
 - Dashboard: headline cards linked to calculation cells, red only for losses, everything aligned
 - README.md needs the .md extension to render; image links are case-sensitive
+
+## Day 8 · SQL setup + SELECT / WHERE
+
+**Did**
+- Prepared an export copy of the clean sheet: snake_case headers, dates as yyyy-mm-dd
+- Installed DB Browser for SQLite; created `superstore.db`; imported the CSV as table `orders`
+- First queries: SELECT *, LIMIT, COUNT(*), choosing columns, WHERE, AND
+
+**Data checks (reconciling the database with Excel)**
+- COUNT(*) returned 9,994, not 9,993 → cause: a blank row imported from the CSV → deleted it
+- Excel row numbers vs data rows: last row 9,995 = 9,994 data rows + 1 header
+- typeof() showed discount and profit stored as TEXT (Excel exported $, %, brackets)
+  → set columns to General in Excel, re-exported, dropped and re-imported the table
+- Final: 9,993 rows, East = 2,847, numeric columns stored as real
+
+**Queries and results**
+| Question | Result | Check |
+|---|---|---|
+| Loss-making lines (profit < 0) | 1,870 | Predicted: 1,871 − the removed loss-making duplicate |
+| Lines with no discount | 4,798 | Matches Day 4 band table |
+| Central lines with discount > 20% | 643 | |
+| Furniture lines that lose money | 713 | ~1 in 3, matches Excel |
+| Texas lines that lose money | 486 | Matches exercise #11 |
+| Lines discounted 70% or more | 718 | Below the 933 "Over 40%" lines; many binders; includes the 3D printer |
+
+**Lessons**
+- Click Write Changes after anything that changes data (DELETE, DROP, import) → like a transaction commit
+- typeof() shows how SQLite stored each value; text "numbers" break comparisons and SUMs silently
+- Fix data problems at the source (the export), not downstream
+- Text values in single quotes ('West'), numbers without quotes (0.2)
+- GROUP BY makes piles of matching rows; HAVING filters piles after grouping (WHERE filters rows before)
+- Fewer GROUP BY columns → bigger piles → same or more "duplicates", including false ones
+- Predict a result before running the query; check it against numbers you already trust
