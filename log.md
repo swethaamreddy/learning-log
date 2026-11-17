@@ -221,3 +221,37 @@ Capping discounts at 20% could protect up to ~$135K (assumes customers still buy
 - GROUP BY makes piles of matching rows; HAVING filters piles after grouping (WHERE filters rows before)
 - Fewer GROUP BY columns → bigger piles → same or more "duplicates", including false ones
 - Predict a result before running the query; check it against numbers you already trust
+
+## Day 9 · Sorting and filtering (ORDER BY, DISTINCT, LIKE, IN, BETWEEN)
+
+**Did**
+- ORDER BY (ASC/DESC, multiple columns) + LIMIT for top-N lists
+- DISTINCT and COUNT(DISTINCT …)
+- LIKE with % wildcards (case-insensitive in SQLite; PostgreSQL uses ILIKE)
+- IN as a shortcut for many ORs; BETWEEN for inclusive ranges (numbers and yyyy-mm-dd dates)
+- 12 practice problems
+
+**Results**
+| Question | Result | Check |
+|---|---|---|
+| Distinct regions / customers / orders / sub-categories | 4 / 793 / 5,009 / 17 | Orders match Day 4 |
+| Letter opener lines (LIKE) | 48 | Matches Day 6 pivot |
+| Lines in West or East (IN) | 6,050 | 3,203 + 2,847 |
+| Loss lines in the 5 problem states (IN) | 1,295 | |
+| Discount between 21% and 40% (BETWEEN) | 459 | Matches Day 4 band table |
+| Biggest loss overall | 3D printer, −$6,600 | Matches Day 2 |
+
+**Findings**
+- 5 worst losses in 2017: 2 printers and 3 binding machines, all at 50–80% off
+  (Cubify 3D printer −$3,840, Lexmark laser printer −$3,400, Ibico, Fellowes, GBC binding systems)
+  → deep discounts do the most damage on high-price products
+- "chair" in the product name (700 lines) ≠ Chairs sub-category (616 lines):
+  LIKE caught 126 non-chair lines AND missed 42 real chairs; the net difference (84) hid both errors
+
+**Lessons**
+- AND is evaluated before OR → always use brackets when mixing them
+- Confirm a prediction by checking the result, don't just state it
+- LIKE patterns can over-match and under-match at once; filter on a category column when one exists
+- A net difference can hide two opposite errors → count both sides
+- Check that a dividing line means something ("70–80%" was arbitrary; >20% came from the data)
+- Format results for presentation: ROUND(profit, 0), not −3839.9904
