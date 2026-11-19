@@ -255,3 +255,38 @@ Capping discounts at 20% could protect up to ~$135K (assumes customers still buy
 - A net difference can hide two opposite errors → count both sides
 - Check that a dividing line means something ("70–80%" was arbitrary; >20% came from the data)
 - Format results for presentation: ROUND(profit, 0), not −3839.9904
+
+## Day 10 · Aggregates + GROUP BY
+
+**Did**
+- Aggregates: COUNT, SUM, AVG, MIN, MAX
+- GROUP BY one and two columns (= pivot tables in SQL)
+- Aliases (AS), ROUND, ORDER BY on aggregated columns
+- Recreated my Excel region table, category × region grid and sub-category ranking in SQL
+
+**Results**
+| Region | Order lines | Sales | Profit | Avg discount | Margin |
+|---|---|---|---|---|---|
+| West | 3,203 | $725,458 | $108,418 | 10.9% | 14.9% |
+| East | 2,847 | $678,500 | $91,535 | 14.5% | 13.5% |
+| South | 1,620 | $391,722 | $46,749 | 14.7% | 11.9% |
+| Central | 2,323 | $501,240 | $39,706 | 24.0% | 7.9% |
+
+- Matches Excel; East reflects the removed duplicate (−1 line, −$281 sales, +$12 profit)
+- Central Furniture margin: −1.8% ✓
+- Worst sub-categories by profit: Tables, Bookcases, Supplies ✓
+- Loss-making lines in East: 552 (predicted: the removed duplicate was a loss line)
+- Top 5 states by sales: California, New York, Texas, Washington, Pennsylvania
+  → Texas (−$25.7K) and Pennsylvania (−$15.6K) lose money despite high sales;
+    Washington sells less than Texas but earns $33K
+- Segment average discount: Consumer 15.8%, Corporate 15.8%, Home Office 14.7%
+  → Consumer and Corporate have identical discounts but different margins (11.5% vs 13.0%),
+    so average discount doesn't explain the segment gap
+
+**Lessons**
+- Every SELECT column must be in GROUP BY or inside an aggregate
+- Margin = SUM(profit) / SUM(sales), never AVG(profit / sales)
+- Integer division trap in SQLite: use 1.0 * COUNT(…) / COUNT(*)
+- Send results with queries: the answer is what a manager needs
+- Equal averages can hide different extremes → check shares above a threshold (next: CASE)
+- Use precise terms: segment ≠ category
