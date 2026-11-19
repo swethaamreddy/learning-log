@@ -1,4 +1,3 @@
-
 SELECT COUNT(*) FROM orders;
 SELECT COUNT(*) FROM orders
 WHERE order_id IS NULL OR order_id=' ';
