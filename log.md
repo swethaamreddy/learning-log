@@ -290,3 +290,45 @@ Capping discounts at 20% could protect up to ~$135K (assumes customers still buy
 - Send results with queries: the answer is what a manager needs
 - Equal averages can hide different extremes → check shares above a threshold (next: CASE)
 - Use precise terms: segment ≠ category
+
+  ## Day 11 · HAVING + CASE WHEN
+
+**Did**
+- HAVING to filter groups (WHERE filters rows before grouping, HAVING filters groups after)
+- CASE WHEN to build discount bands in SQL
+- Conditional aggregation: counting and sharing rows that meet a condition, per group
+- 7 practice problems
+
+**Query order (how SQL runs it)**
+FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT
+
+**Results**
+| Discount band | Order lines | Loss lines | Loss share | Margin |
+|---|---|---|---|---|
+| 0% | 4,798 | 0 | 0% | 29.5% |
+| 1–20% | 3,803 | 523 | 13.8% | 11.9% |
+| 21–40% | 459 | 414 | 90.2% | −15.3% |
+| Over 40% | 933 | 933 | 100% | −77.4% |
+
+- Matches Day 4; loss lines total 1,870 = Day 8 ✓
+- ≤20% vs >20% margin: 21.8% vs −37.3% = dashboard card ✓
+- Sub-categories with negative profit: Tables, Bookcases, Supplies ✓
+- States with sales > $100K and negative profit: Texas, Pennsylvania ✓
+- Loss share by region matches Day 2 (East unchanged at 19.4% after cleaning)
+- Share of lines discounted > 20% by segment: 13.3%–14.2% → too close to explain the segment margin gap
+- 88 customers placed 10+ orders; the maximum is 17 orders (37 order lines)
+
+**Finding**
+- No full-price order line ever lost money; every line discounted over 40% did
+
+**Lessons**
+- CASE stops at the first true condition → order low to high with <=
+- Always write ELSE (or use it to catch bad data: ELSE 'CHECK')
+- SUM(CASE … THEN 1 ELSE 0 END) and COUNT(CASE … THEN 1 END) both count rows;
+  COUNT(CASE … ELSE 0 END) counts every row (0 is not NULL)
+- SQLite: SUM(condition), AVG(condition); PostgreSQL: SUM((condition)::int) or COUNT(*) FILTER (WHERE …)
+- AVG skips NULLs; COUNT(*) counts all rows, COUNT(column) only non-NULL
+  → decide whether NULL means "unknown" or "zero" (COALESCE makes it visible)
+- Without ORDER BY, SQL promises no order; ORDER BY can use aggregates like MIN(discount)
+- Aliases in HAVING work in SQLite/MySQL but not PostgreSQL → repeat the full expression
+- Name columns for what they count: COUNT(*) = order lines, COUNT(DISTINCT order_id) = orders
