@@ -332,3 +332,12 @@ FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT
 - Without ORDER BY, SQL promises no order; ORDER BY can use aggregates like MIN(discount)
 - Aliases in HAVING work in SQLite/MySQL but not PostgreSQL → repeat the full expression
 - Name columns for what they count: COUNT(*) = order lines, COUNT(DISTINCT order_id) = orders
+
+## Day 12 · NULLs + dates
+- Learned IS NULL (never = NULL), COALESCE for defaults and fallback columns, NULLIF to turn '' into NULL; CSV blanks can arrive as '' not NULL
+- Dates in SQLite: strftime('%Y' / '%m' / '%Y-%m'), julianday() for days between dates (PostgreSQL: EXTRACT, DATE_TRUNC)
+- Results: lines per year 1,992 / 2,102 / 2,587 / 3,312 (= 9,993); sales $484K / $471K / $609K / $733K (= $2,296,920);
+  growth — / −2.8% / +29.5% / +20.4%; avg days to ship 3.96 (Same Day 0.04, First 2.18, Second 3.24, Standard 5.01)
+- Findings: "Same Day" orders don't always ship the same day; 2015 had more lines but less sales → average sale per line fell
+- Mistakes: grouped by order_date (one group per day) instead of year-month; grouped by year-month (48 rows) when the question
+  needed month number (12 rows) → GROUP BY level must match the question; first-year growth is unknown (NULL), not 0
