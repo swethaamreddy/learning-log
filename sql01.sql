@@ -126,3 +126,81 @@ FROM orders
 GROUP BY sub_category
 HAVING SUM(profit) < 0;
 
+SELECT 
+	order_id,
+	COUNT(customer_id),
+	COUNT(product_id)
+FROM orders
+WHERE order_id IS NULL OR order_id = '';
+
+SELECT
+	strftime('%Y', order_date) as order_yr,
+	ROUND(sum(sales),0) as total_sales,
+	COUNT(*) as order_lines
+FROM orders
+GROUP BY order_yr
+ORDER BY order_yr;
+
+SELECT
+	strftime('%Y-%m', order_date),
+	ROUND(sum(sales),0) as total_sales,
+	COUNT(*) as order_lines
+FROM orders
+GROUP BY order_date
+ORDER BY order_date;
+
+SELECT
+	ROUND(AVG(julianday(ship_date) - julianday(order_date)),2),
+	COUNT(*) as order_lines
+FROM orders;
+
+SELECT 
+	SUM(CASE WHEN customer_id IS NULL OR customer_id = '' THEN 1 ELSE 0 END) AS blank_names,
+	SUM(CASE WHEN product_id    IS NULL OR product_id    = '' THEN 1 ELSE 0 END) AS blank_products
+FROM orders;
+
+SELECT strftime('%Y-%m', order_date) AS order_month,
+       ROUND(SUM(sales), 0) AS total_sales,
+       COUNT(*) AS order_lines
+FROM orders
+GROUP BY order_month
+ORDER BY order_month;
+
+SELECT
+	ship_mode,
+	ROUND(AVG(julianday(ship_date) - julianday(order_date)),2) AS avg_ship_days
+FROM orders
+GROUP BY ship_mode
+ORDER BY avg_ship_days;
+SELECT 
+	strftime('%m', order_date) as month,
+	strftime('%Y-%m', order_date) as order_month,
+	ROUND(SUM(sales),0) as toal_sales,
+	ROUND(SUM(profit),0) as total_profit
+FROM orders
+GROUP BY order_month
+ORDER BY order_month;
+
+SELECT 
+	strftime('%Y', order_date) as order_yr,
+	ROUND(SUM(sales),0) as total_sales
+from orders
+GROUP BY order_yr
+ORDER BY order_yr;
+
+SELECT COUNT(*) FROM orders
+WHERE ship_mode = 'Same Day' AND ship_date > order_date;
+
+SELECT strftime('%m', order_date) AS month,
+       ROUND(SUM(sales), 0)  AS total_sales,
+       ROUND(SUM(profit), 0) AS total_profit
+FROM orders
+GROUP BY month
+ORDER BY month;
+
+SELECT strftime('%Y', order_date) AS yr,
+       ROUND(SUM(sales) / COUNT(*), 0) AS avg_sale_per_line,
+       ROUND(AVG(discount), 3) AS avg_discount
+FROM orders
+GROUP BY yr ORDER BY yr;
+
