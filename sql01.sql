@@ -103,3 +103,26 @@ WHERE product_name LIKE '%chair%' AND sub_category <> 'Chairs';
 SELECT DISTINCT product_name
 FROM orders
 WHERE sub_category = 'Chairs' AND product_name NOT LIKE '%chair%';
+
+SELECT sub_category, ROUND(SUM(profit), 0) AS total_profit
+FROM orders
+GROUP BY sub_category
+HAVING SUM(profit) < 0;
+SELECT
+  CASE
+    WHEN discount = 0    THEN '0%'
+    WHEN discount <= 0.2 THEN '1–20%'
+    WHEN discount <= 0.4 THEN '21–40%'
+	WHEN discount <= 1   THEN 'Over 40%'
+    ELSE 'CHECK'
+  END AS discount_band,
+  COUNT(*) AS order_lines,
+  SUM(CASE WHEN profit < 0 THEN 1 ELSE 0 END) AS loss_lines
+FROM orders
+GROUP BY discount_band;
+
+SELECT sub_category, ROUND(SUM(profit), 0) AS total_profit
+FROM orders
+GROUP BY sub_category
+HAVING SUM(profit) < 0;
+
